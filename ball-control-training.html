@@ -178,17 +178,18 @@
       color: var(--green-dark);
     }
 
-    .preview-image-wrap {
+    .preview-media-wrap {
       background: #f4faf6;
       padding: 0.75rem;
     }
 
-    .preview-image-wrap img {
+    .preview-media-wrap video {
       display: block;
       width: 100%;
       height: auto;
       border-radius: 8px;
       object-fit: contain;
+      background: #000;
     }
 
     .preview-caption {
@@ -286,13 +287,14 @@
     <header>
       <div class="badge">Mat Soccer Drill</div>
       <h1>Ball Control Circuit</h1>
-      <p>11 Drills for a Training Mat — tap a drill to see the demo</p>
+      <p>11 Drills for a Training Mat — tap a drill to watch the clip</p>
     </header>
 
     <div class="layout">
       <div class="drill-list" role="listbox" aria-label="Training drills">
         <button type="button" class="drill selected" role="option" aria-selected="true"
-          data-image="images/01-sole-taps.png"
+          data-video="videos/01-sole-taps.mp4"
+          data-poster="images/01-sole-taps.png"
           data-title="Sole Taps"
           data-duration="1 min"
           data-desc="Alternate light taps on top of the ball with the sole. Warm-up / feel for the ball.">
@@ -305,7 +307,8 @@
         </button>
 
         <button type="button" class="drill" role="option" aria-selected="false"
-          data-image="images/02-sole-rolls.png"
+          data-video="videos/02-sole-rolls.mp4"
+          data-poster="images/02-sole-rolls.png"
           data-title="Sole Rolls"
           data-duration="30s × 2"
           data-desc="Roll the ball side to side under the sole of one foot at a time.">
@@ -318,7 +321,8 @@
         </button>
 
         <button type="button" class="drill" role="option" aria-selected="false"
-          data-image="images/03-inside-taps.png"
+          data-video="videos/03-inside-taps.mp4"
+          data-poster="images/03-inside-taps.png"
           data-title="Inside Taps"
           data-duration="30s × 2"
           data-desc="Quick alternating taps using the inside of each foot, ball stays close.">
@@ -331,7 +335,8 @@
         </button>
 
         <button type="button" class="drill" role="option" aria-selected="false"
-          data-image="images/04-inside-push.png"
+          data-video="videos/04-inside-push.mp4"
+          data-poster="images/04-inside-push.png"
           data-title="Inside Push"
           data-duration="30s × 2"
           data-desc="Push the ball from one inside foot to the other, building rhythm.">
@@ -344,7 +349,8 @@
         </button>
 
         <button type="button" class="drill" role="option" aria-selected="false"
-          data-image="images/05-inside-push-2nd.png"
+          data-video="videos/05-inside-push-2nd.mp4"
+          data-poster="images/05-inside-push-2nd.png"
           data-title="Inside Push (2nd set)"
           data-duration="30s × 2"
           data-desc="Repeat inside push, focus on quicker tempo / opposite lead foot.">
@@ -357,7 +363,8 @@
         </button>
 
         <button type="button" class="drill" role="option" aria-selected="false"
-          data-image="images/06-inside-outside.png"
+          data-video="videos/06-inside-outside.mp4"
+          data-poster="images/06-inside-outside.png"
           data-title="Inside / Outside"
           data-duration="30s × 3"
           data-desc="Inside touch then outside touch of the same foot, moving the ball forward.">
@@ -370,7 +377,8 @@
         </button>
 
         <button type="button" class="drill" role="option" aria-selected="false"
-          data-image="images/07-inside-v-cuts.png"
+          data-video="videos/07-inside-v-cuts.mp4"
+          data-poster="images/07-inside-v-cuts.png"
           data-title="Inside V-Cuts"
           data-duration="30s × 3"
           data-desc="Cut the ball in a V-shape using the inside of the foot, changing direction sharply.">
@@ -383,7 +391,8 @@
         </button>
 
         <button type="button" class="drill" role="option" aria-selected="false"
-          data-image="images/08-l-drags.png"
+          data-video="videos/08-l-drags.mp4"
+          data-poster="images/08-l-drags.png"
           data-title="L Drags"
           data-duration="30s × 2"
           data-desc="Drag the ball across your body with the sole in an L-shaped path.">
@@ -396,7 +405,8 @@
         </button>
 
         <button type="button" class="drill" role="option" aria-selected="false"
-          data-image="images/09-stepovers.png"
+          data-video="videos/09-stepovers.mp4"
+          data-poster="images/09-stepovers.png"
           data-title="Stepovers"
           data-duration="30s × 2"
           data-desc="Circle foot over the top of the ball without touching it, then push off the other way.">
@@ -409,7 +419,8 @@
         </button>
 
         <button type="button" class="drill" role="option" aria-selected="false"
-          data-image="images/10-croquetas.png"
+          data-video="videos/10-croquetas.mp4"
+          data-poster="images/10-croquetas.png"
           data-title="Croquetas"
           data-duration="30s × 2"
           data-desc="Quick drag from one foot to the other across the body, low and controlled.">
@@ -422,7 +433,8 @@
         </button>
 
         <button type="button" class="drill" role="option" aria-selected="false"
-          data-image="images/11-single-leg-juggle.png"
+          data-video="videos/11-single-leg-juggle.mp4"
+          data-poster="images/11-single-leg-juggle.png"
           data-title="Single Leg Juggle (R)"
           data-duration="50×"
           data-desc="Keep the ball up using only the right foot, controlled low bounces.">
@@ -440,8 +452,9 @@
           <div class="label">Selected drill</div>
           <h2 id="preview-title">Sole Taps</h2>
         </div>
-        <div class="preview-image-wrap">
-          <img id="preview-image" src="images/01-sole-taps.png" alt="Sole Taps demonstration">
+        <div class="preview-media-wrap">
+          <video id="preview-video" src="videos/01-sole-taps.mp4" poster="images/01-sole-taps.png"
+            controls loop playsinline aria-label="Sole Taps demonstration"></video>
         </div>
         <div class="preview-caption">
           <p id="preview-desc">Alternate light taps on top of the ball with the sole. Warm-up / feel for the ball.</p>
@@ -466,25 +479,31 @@
   <script>
     const drills = document.querySelectorAll('.drill');
     const previewTitle = document.getElementById('preview-title');
-    const previewImage = document.getElementById('preview-image');
+    const previewVideo = document.getElementById('preview-video');
     const previewDesc = document.getElementById('preview-desc');
     const previewDuration = document.getElementById('preview-duration');
 
-    drills.forEach((drill) => {
-      drill.addEventListener('click', () => {
-        drills.forEach((d) => {
-          d.classList.remove('selected');
-          d.setAttribute('aria-selected', 'false');
-        });
-        drill.classList.add('selected');
-        drill.setAttribute('aria-selected', 'true');
-
-        previewTitle.textContent = drill.dataset.title;
-        previewImage.src = drill.dataset.image;
-        previewImage.alt = drill.dataset.title + ' demonstration';
-        previewDesc.textContent = drill.dataset.desc;
-        previewDuration.textContent = drill.dataset.duration;
+    function showDrill(drill) {
+      drills.forEach((d) => {
+        d.classList.remove('selected');
+        d.setAttribute('aria-selected', 'false');
       });
+      drill.classList.add('selected');
+      drill.setAttribute('aria-selected', 'true');
+
+      previewTitle.textContent = drill.dataset.title;
+      previewVideo.pause();
+      previewVideo.src = drill.dataset.video;
+      previewVideo.poster = drill.dataset.poster;
+      previewVideo.setAttribute('aria-label', drill.dataset.title + ' demonstration');
+      previewDesc.textContent = drill.dataset.desc;
+      previewDuration.textContent = drill.dataset.duration;
+      previewVideo.load();
+      previewVideo.play().catch(() => {});
+    }
+
+    drills.forEach((drill) => {
+      drill.addEventListener('click', () => showDrill(drill));
     });
   </script>
 </body>
