@@ -31,14 +31,14 @@
     }
 
     .page {
-      max-width: 720px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
     header {
       text-align: center;
       color: var(--white);
-      margin-bottom: 2rem;
+      margin-bottom: 1.75rem;
       padding-top: 0.5rem;
     }
 
@@ -66,13 +66,19 @@
       margin-top: 0.5rem;
       font-size: 1rem;
       opacity: 0.85;
-      font-weight: 400;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 1.25rem;
+      align-items: start;
     }
 
     .drill-list {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.65rem;
     }
 
     .drill {
@@ -84,11 +90,20 @@
       gap: 0 1rem;
       align-items: start;
       padding: 1rem 1.25rem;
-      transition: transform 0.15s ease;
+      border: 2px solid transparent;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .drill:hover {
       transform: translateY(-1px);
+    }
+
+    .drill.selected {
+      border-color: var(--green-light);
+      box-shadow: 0 4px 20px rgba(82, 183, 136, 0.25);
     }
 
     .drill-num {
@@ -104,6 +119,11 @@
       font-size: 0.95rem;
       flex-shrink: 0;
       margin-top: 0.1rem;
+    }
+
+    .drill.selected .drill-num {
+      background: var(--green-light);
+      color: var(--green-dark);
     }
 
     .drill-body h2 {
@@ -130,8 +150,68 @@
       margin-top: 0.1rem;
     }
 
+    .preview-panel {
+      position: sticky;
+      top: 1.25rem;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .preview-header {
+      padding: 1rem 1.25rem 0.75rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .preview-header .label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray-600);
+      margin-bottom: 0.25rem;
+    }
+
+    .preview-header h2 {
+      font-size: 1.15rem;
+      color: var(--green-dark);
+    }
+
+    .preview-image-wrap {
+      background: #f4faf6;
+      padding: 0.75rem;
+    }
+
+    .preview-image-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    .preview-caption {
+      padding: 0.85rem 1.25rem 1.1rem;
+      font-size: 0.88rem;
+      color: var(--gray-600);
+      line-height: 1.55;
+    }
+
+    .preview-duration {
+      display: inline-block;
+      margin-top: 0.5rem;
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+    }
+
     .instructions {
-      margin-top: 1.75rem;
+      grid-column: 1 / -1;
+      margin-top: 0.5rem;
       background: rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: var(--radius);
@@ -161,6 +241,17 @@
       font-size: 0.8rem;
     }
 
+    @media (max-width: 860px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-panel {
+        position: static;
+        order: -1;
+      }
+    }
+
     @media (max-width: 480px) {
       .drill {
         grid-template-columns: 2.5rem 1fr;
@@ -175,31 +266,17 @@
     }
 
     @media print {
-      body {
-        background: white;
-        padding: 0;
-        color: black;
-      }
-
+      body { background: white; padding: 0; color: black; }
       header { color: black; }
       header .badge { background: var(--gray-200); border-color: var(--gray-200); color: var(--gray-800); }
       header p { opacity: 1; color: var(--gray-600); }
-
-      .drill {
-        box-shadow: none;
-        border: 1px solid var(--gray-200);
-        break-inside: avoid;
-      }
-
-      .instructions {
-        background: var(--gray-100);
-        border-color: var(--gray-200);
-        color: var(--gray-800);
-      }
-
+      .layout { grid-template-columns: 1fr 280px; }
+      .preview-panel { position: static; break-inside: avoid; }
+      .drill { box-shadow: none; border: 1px solid var(--gray-200); break-inside: avoid; }
+      .drill.selected { border-color: var(--gray-200); }
+      .instructions { background: var(--gray-100); border-color: var(--gray-200); color: var(--gray-800); }
       .instructions h2 { opacity: 1; color: var(--gray-600); }
       .instructions p { opacity: 1; }
-
       footer { display: none; }
     }
   </style>
@@ -209,121 +286,206 @@
     <header>
       <div class="badge">Mat Soccer Drill</div>
       <h1>Ball Control Circuit</h1>
-      <p>11 Drills for a Training Mat</p>
+      <p>11 Drills for a Training Mat — tap a drill to see the demo</p>
     </header>
 
-    <div class="drill-list">
-      <article class="drill">
-        <div class="drill-num">1</div>
-        <div class="drill-body">
-          <h2>Sole Taps</h2>
-          <p>Alternate light taps on top of the ball with the sole. Warm-up / feel for the ball.</p>
-        </div>
-        <span class="duration">1 min</span>
-      </article>
+    <div class="layout">
+      <div class="drill-list" role="listbox" aria-label="Training drills">
+        <button type="button" class="drill selected" role="option" aria-selected="true"
+          data-image="images/01-sole-taps.png"
+          data-title="Sole Taps"
+          data-duration="1 min"
+          data-desc="Alternate light taps on top of the ball with the sole. Warm-up / feel for the ball.">
+          <div class="drill-num">1</div>
+          <div class="drill-body">
+            <h2>Sole Taps</h2>
+            <p>Alternate light taps on top of the ball with the sole. Warm-up / feel for the ball.</p>
+          </div>
+          <span class="duration">1 min</span>
+        </button>
 
-      <article class="drill">
-        <div class="drill-num">2</div>
-        <div class="drill-body">
-          <h2>Sole Rolls</h2>
-          <p>Roll the ball side to side under the sole of one foot at a time.</p>
-        </div>
-        <span class="duration">30s × 2</span>
-      </article>
+        <button type="button" class="drill" role="option" aria-selected="false"
+          data-image="images/02-sole-rolls.png"
+          data-title="Sole Rolls"
+          data-duration="30s × 2"
+          data-desc="Roll the ball side to side under the sole of one foot at a time.">
+          <div class="drill-num">2</div>
+          <div class="drill-body">
+            <h2>Sole Rolls</h2>
+            <p>Roll the ball side to side under the sole of one foot at a time.</p>
+          </div>
+          <span class="duration">30s × 2</span>
+        </button>
 
-      <article class="drill">
-        <div class="drill-num">3</div>
-        <div class="drill-body">
-          <h2>Inside Taps</h2>
-          <p>Quick alternating taps using the inside of each foot, ball stays close.</p>
-        </div>
-        <span class="duration">30s × 2</span>
-      </article>
+        <button type="button" class="drill" role="option" aria-selected="false"
+          data-image="images/03-inside-taps.png"
+          data-title="Inside Taps"
+          data-duration="30s × 2"
+          data-desc="Quick alternating taps using the inside of each foot, ball stays close.">
+          <div class="drill-num">3</div>
+          <div class="drill-body">
+            <h2>Inside Taps</h2>
+            <p>Quick alternating taps using the inside of each foot, ball stays close.</p>
+          </div>
+          <span class="duration">30s × 2</span>
+        </button>
 
-      <article class="drill">
-        <div class="drill-num">4</div>
-        <div class="drill-body">
-          <h2>Inside Push</h2>
-          <p>Push the ball from one inside foot to the other, building rhythm.</p>
-        </div>
-        <span class="duration">30s × 2</span>
-      </article>
+        <button type="button" class="drill" role="option" aria-selected="false"
+          data-image="images/04-inside-push.png"
+          data-title="Inside Push"
+          data-duration="30s × 2"
+          data-desc="Push the ball from one inside foot to the other, building rhythm.">
+          <div class="drill-num">4</div>
+          <div class="drill-body">
+            <h2>Inside Push</h2>
+            <p>Push the ball from one inside foot to the other, building rhythm.</p>
+          </div>
+          <span class="duration">30s × 2</span>
+        </button>
 
-      <article class="drill">
-        <div class="drill-num">5</div>
-        <div class="drill-body">
-          <h2>Inside Push (2nd set)</h2>
-          <p>Repeat inside push, focus on quicker tempo / opposite lead foot.</p>
-        </div>
-        <span class="duration">30s × 2</span>
-      </article>
+        <button type="button" class="drill" role="option" aria-selected="false"
+          data-image="images/05-inside-push-2nd.png"
+          data-title="Inside Push (2nd set)"
+          data-duration="30s × 2"
+          data-desc="Repeat inside push, focus on quicker tempo / opposite lead foot.">
+          <div class="drill-num">5</div>
+          <div class="drill-body">
+            <h2>Inside Push (2nd set)</h2>
+            <p>Repeat inside push, focus on quicker tempo / opposite lead foot.</p>
+          </div>
+          <span class="duration">30s × 2</span>
+        </button>
 
-      <article class="drill">
-        <div class="drill-num">6</div>
-        <div class="drill-body">
-          <h2>Inside / Outside</h2>
-          <p>Inside touch then outside touch of the same foot, moving the ball forward.</p>
-        </div>
-        <span class="duration">30s × 3</span>
-      </article>
+        <button type="button" class="drill" role="option" aria-selected="false"
+          data-image="images/06-inside-outside.png"
+          data-title="Inside / Outside"
+          data-duration="30s × 3"
+          data-desc="Inside touch then outside touch of the same foot, moving the ball forward.">
+          <div class="drill-num">6</div>
+          <div class="drill-body">
+            <h2>Inside / Outside</h2>
+            <p>Inside touch then outside touch of the same foot, moving the ball forward.</p>
+          </div>
+          <span class="duration">30s × 3</span>
+        </button>
 
-      <article class="drill">
-        <div class="drill-num">7</div>
-        <div class="drill-body">
-          <h2>Inside V-Cuts</h2>
-          <p>Cut the ball in a V-shape using the inside of the foot, changing direction sharply.</p>
-        </div>
-        <span class="duration">30s × 3</span>
-      </article>
+        <button type="button" class="drill" role="option" aria-selected="false"
+          data-image="images/07-inside-v-cuts.png"
+          data-title="Inside V-Cuts"
+          data-duration="30s × 3"
+          data-desc="Cut the ball in a V-shape using the inside of the foot, changing direction sharply.">
+          <div class="drill-num">7</div>
+          <div class="drill-body">
+            <h2>Inside V-Cuts</h2>
+            <p>Cut the ball in a V-shape using the inside of the foot, changing direction sharply.</p>
+          </div>
+          <span class="duration">30s × 3</span>
+        </button>
 
-      <article class="drill">
-        <div class="drill-num">8</div>
-        <div class="drill-body">
-          <h2>L Drags</h2>
-          <p>Drag the ball across your body with the sole in an L-shaped path.</p>
-        </div>
-        <span class="duration">30s × 2</span>
-      </article>
+        <button type="button" class="drill" role="option" aria-selected="false"
+          data-image="images/08-l-drags.png"
+          data-title="L Drags"
+          data-duration="30s × 2"
+          data-desc="Drag the ball across your body with the sole in an L-shaped path.">
+          <div class="drill-num">8</div>
+          <div class="drill-body">
+            <h2>L Drags</h2>
+            <p>Drag the ball across your body with the sole in an L-shaped path.</p>
+          </div>
+          <span class="duration">30s × 2</span>
+        </button>
 
-      <article class="drill">
-        <div class="drill-num">9</div>
-        <div class="drill-body">
-          <h2>Stepovers</h2>
-          <p>Circle foot over the top of the ball without touching it, then push off the other way.</p>
-        </div>
-        <span class="duration">30s × 2</span>
-      </article>
+        <button type="button" class="drill" role="option" aria-selected="false"
+          data-image="images/09-stepovers.png"
+          data-title="Stepovers"
+          data-duration="30s × 2"
+          data-desc="Circle foot over the top of the ball without touching it, then push off the other way.">
+          <div class="drill-num">9</div>
+          <div class="drill-body">
+            <h2>Stepovers</h2>
+            <p>Circle foot over the top of the ball without touching it, then push off the other way.</p>
+          </div>
+          <span class="duration">30s × 2</span>
+        </button>
 
-      <article class="drill">
-        <div class="drill-num">10</div>
-        <div class="drill-body">
-          <h2>Croquetas</h2>
-          <p>Quick drag from one foot to the other across the body, low and controlled.</p>
-        </div>
-        <span class="duration">30s × 2</span>
-      </article>
+        <button type="button" class="drill" role="option" aria-selected="false"
+          data-image="images/10-croquetas.png"
+          data-title="Croquetas"
+          data-duration="30s × 2"
+          data-desc="Quick drag from one foot to the other across the body, low and controlled.">
+          <div class="drill-num">10</div>
+          <div class="drill-body">
+            <h2>Croquetas</h2>
+            <p>Quick drag from one foot to the other across the body, low and controlled.</p>
+          </div>
+          <span class="duration">30s × 2</span>
+        </button>
 
-      <article class="drill">
-        <div class="drill-num">11</div>
-        <div class="drill-body">
-          <h2>Single Leg Juggle (R)</h2>
-          <p>Keep the ball up using only the right foot, controlled low bounces.</p>
+        <button type="button" class="drill" role="option" aria-selected="false"
+          data-image="images/11-single-leg-juggle.png"
+          data-title="Single Leg Juggle (R)"
+          data-duration="50×"
+          data-desc="Keep the ball up using only the right foot, controlled low bounces.">
+          <div class="drill-num">11</div>
+          <div class="drill-body">
+            <h2>Single Leg Juggle (R)</h2>
+            <p>Keep the ball up using only the right foot, controlled low bounces.</p>
+          </div>
+          <span class="duration">50×</span>
+        </button>
+      </div>
+
+      <aside class="preview-panel" aria-live="polite">
+        <div class="preview-header">
+          <div class="label">Selected drill</div>
+          <h2 id="preview-title">Sole Taps</h2>
         </div>
-        <span class="duration">50×</span>
-      </article>
+        <div class="preview-image-wrap">
+          <img id="preview-image" src="images/01-sole-taps.png" alt="Sole Taps demonstration">
+        </div>
+        <div class="preview-caption">
+          <p id="preview-desc">Alternate light taps on top of the ball with the sole. Warm-up / feel for the ball.</p>
+          <span class="preview-duration" id="preview-duration">1 min</span>
+        </div>
+      </aside>
+
+      <section class="instructions">
+        <h2>How to run the circuit</h2>
+        <p>
+          Perform each drill for the listed time/reps, resting ~15–20s between drills.
+          That's roughly 12–13 minutes for one full round. Repeat 2–3 rounds, alternating
+          lead foot each round. Keep touches soft and eyes up between touches once each
+          move feels comfortable.
+        </p>
+      </section>
     </div>
-
-    <section class="instructions">
-      <h2>How to run the circuit</h2>
-      <p>
-        Perform each drill for the listed time/reps, resting ~15–20s between drills.
-        That's roughly 12–13 minutes for one full round. Repeat 2–3 rounds, alternating
-        lead foot each round. Keep touches soft and eyes up between touches once each
-        move feels comfortable.
-      </p>
-    </section>
 
     <footer>Ball Control Training Sheet</footer>
   </div>
+
+  <script>
+    const drills = document.querySelectorAll('.drill');
+    const previewTitle = document.getElementById('preview-title');
+    const previewImage = document.getElementById('preview-image');
+    const previewDesc = document.getElementById('preview-desc');
+    const previewDuration = document.getElementById('preview-duration');
+
+    drills.forEach((drill) => {
+      drill.addEventListener('click', () => {
+        drills.forEach((d) => {
+          d.classList.remove('selected');
+          d.setAttribute('aria-selected', 'false');
+        });
+        drill.classList.add('selected');
+        drill.setAttribute('aria-selected', 'true');
+
+        previewTitle.textContent = drill.dataset.title;
+        previewImage.src = drill.dataset.image;
+        previewImage.alt = drill.dataset.title + ' demonstration';
+        previewDesc.textContent = drill.dataset.desc;
+        previewDuration.textContent = drill.dataset.duration;
+      });
+    });
+  </script>
 </body>
 </html>
