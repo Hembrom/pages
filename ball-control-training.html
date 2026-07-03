@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ball Control Circuit — Mat Soccer Drill</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-dark: #1a472a;
+      --green-mid: #2d6a4f;
+      --green-light: #52b788;
+      --green-pale: #d8f3dc;
+      --white: #ffffff;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-600: #6c757d;
+      --gray-800: #343a40;
+      --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      --radius: 12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(160deg, var(--green-dark) 0%, #0d2818 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+      line-height: 1.5;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      color: var(--white);
+      margin-bottom: 2rem;
+      padding-top: 0.5rem;
+    }
+
+    header .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 999px;
+      padding: 0.35rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    header h1 {
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      opacity: 0.85;
+      font-weight: 400;
+    }
+
+    .drill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .drill {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 3rem 1fr auto;
+      gap: 0 1rem;
+      align-items: start;
+      padding: 1rem 1.25rem;
+      transition: transform 0.15s ease;
+    }
+
+    .drill:hover {
+      transform: translateY(-1px);
+    }
+
+    .drill-num {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: var(--green-mid);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .drill-body h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .drill-body p {
+      font-size: 0.9rem;
+      color: var(--gray-600);
+    }
+
+    .duration {
+      background: var(--green-pale);
+      color: var(--green-dark);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.35rem 0.65rem;
+      border-radius: 8px;
+      white-space: nowrap;
+      align-self: start;
+      margin-top: 0.1rem;
+    }
+
+    .instructions {
+      margin-top: 1.75rem;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      color: var(--white);
+    }
+
+    .instructions h2 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      opacity: 0.75;
+      margin-bottom: 0.5rem;
+    }
+
+    .instructions p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      opacity: 0.92;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 480px) {
+      .drill {
+        grid-template-columns: 2.5rem 1fr;
+        grid-template-rows: auto auto;
+      }
+
+      .duration {
+        grid-column: 2;
+        justify-self: start;
+        margin-top: 0.25rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+        color: black;
+      }
+
+      header { color: black; }
+      header .badge { background: var(--gray-200); border-color: var(--gray-200); color: var(--gray-800); }
+      header p { opacity: 1; color: var(--gray-600); }
+
+      .drill {
+        box-shadow: none;
+        border: 1px solid var(--gray-200);
+        break-inside: avoid;
+      }
+
+      .instructions {
+        background: var(--gray-100);
+        border-color: var(--gray-200);
+        color: var(--gray-800);
+      }
+
+      .instructions h2 { opacity: 1; color: var(--gray-600); }
+      .instructions p { opacity: 1; }
+
+      footer { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="badge">Mat Soccer Drill</div>
+      <h1>Ball Control Circuit</h1>
+      <p>11 Drills for a Training Mat</p>
+    </header>
+
+    <div class="drill-list">
+      <article class="drill">
+        <div class="drill-num">1</div>
+        <div class="drill-body">
+          <h2>Sole Taps</h2>
+          <p>Alternate light taps on top of the ball with the sole. Warm-up / feel for the ball.</p>
+        </div>
+        <span class="duration">1 min</span>
+      </article>
+
+      <article class="drill">
+        <div class="drill-num">2</div>
+        <div class="drill-body">
+          <h2>Sole Rolls</h2>
+          <p>Roll the ball side to side under the sole of one foot at a time.</p>
+        </div>
+        <span class="duration">30s × 2</span>
+      </article>
+
+      <article class="drill">
+        <div class="drill-num">3</div>
+        <div class="drill-body">
+          <h2>Inside Taps</h2>
+          <p>Quick alternating taps using the inside of each foot, ball stays close.</p>
+        </div>
+        <span class="duration">30s × 2</span>
+      </article>
+
+      <article class="drill">
+        <div class="drill-num">4</div>
+        <div class="drill-body">
+          <h2>Inside Push</h2>
+          <p>Push the ball from one inside foot to the other, building rhythm.</p>
+        </div>
+        <span class="duration">30s × 2</span>
+      </article>
+
+      <article class="drill">
+        <div class="drill-num">5</div>
+        <div class="drill-body">
+          <h2>Inside Push (2nd set)</h2>
+          <p>Repeat inside push, focus on quicker tempo / opposite lead foot.</p>
+        </div>
+        <span class="duration">30s × 2</span>
+      </article>
+
+      <article class="drill">
+        <div class="drill-num">6</div>
+        <div class="drill-body">
+          <h2>Inside / Outside</h2>
+          <p>Inside touch then outside touch of the same foot, moving the ball forward.</p>
+        </div>
+        <span class="duration">30s × 3</span>
+      </article>
+
+      <article class="drill">
+        <div class="drill-num">7</div>
+        <div class="drill-body">
+          <h2>Inside V-Cuts</h2>
+          <p>Cut the ball in a V-shape using the inside of the foot, changing direction sharply.</p>
+        </div>
+        <span class="duration">30s × 3</span>
+      </article>
+
+      <article class="drill">
+        <div class="drill-num">8</div>
+        <div class="drill-body">
+          <h2>L Drags</h2>
+          <p>Drag the ball across your body with the sole in an L-shaped path.</p>
+        </div>
+        <span class="duration">30s × 2</span>
+      </article>
+
+      <article class="drill">
+        <div class="drill-num">9</div>
+        <div class="drill-body">
+          <h2>Stepovers</h2>
+          <p>Circle foot over the top of the ball without touching it, then push off the other way.</p>
+        </div>
+        <span class="duration">30s × 2</span>
+      </article>
+
+      <article class="drill">
+        <div class="drill-num">10</div>
+        <div class="drill-body">
+          <h2>Croquetas</h2>
+          <p>Quick drag from one foot to the other across the body, low and controlled.</p>
+        </div>
+        <span class="duration">30s × 2</span>
+      </article>
+
+      <article class="drill">
+        <div class="drill-num">11</div>
+        <div class="drill-body">
+          <h2>Single Leg Juggle (R)</h2>
+          <p>Keep the ball up using only the right foot, controlled low bounces.</p>
+        </div>
+        <span class="duration">50×</span>
+      </article>
+    </div>
+
+    <section class="instructions">
+      <h2>How to run the circuit</h2>
+      <p>
+        Perform each drill for the listed time/reps, resting ~15–20s between drills.
+        That's roughly 12–13 minutes for one full round. Repeat 2–3 rounds, alternating
+        lead foot each round. Keep touches soft and eyes up between touches once each
+        move feels comfortable.
+      </p>
+    </section>
+
+    <footer>Ball Control Training Sheet</footer>
+  </div>
+</body>
+</html>
